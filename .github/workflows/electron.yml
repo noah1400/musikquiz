@@ -1,0 +1,33 @@
+name: Build Cross-Platform Electron App
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+    build_on_win:
+        runs-on: windows-2016
+        steps:
+        - uses: actions/checkout@master
+          with:
+            ref: feature/github-actions        
+        - uses: actions/setup-node@master
+          with:
+            node-version: latest
+        - name: install node tools
+          run: npm install --global --production windows-build-tools
+        - name: install node-gyp
+          run: npm install --global node-gyp@latest
+        - name: Set node config to use python3.12
+          run: npm config set python python3.12
+        - name: Set node config to set msvs_version to 2022
+          run: npm config set msvs_version 2022
+        - name: Work around for Windows Server 2019
+          run: set path=%path%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
+        - name: run npm make
+          run: npm run make
+          
