@@ -10,7 +10,7 @@ on:
 
 jobs:
     build_on_win:
-        runs-on: windows-2016
+        runs-on: windows-latest
         steps:
         - uses: actions/checkout@master
           with:
